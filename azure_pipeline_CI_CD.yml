@@ -1,0 +1,49 @@
+trigger:
+  branches:
+    includes:
+      - main
+variables:
+  ACR_NAME: myacr
+  IMAGE_NAME: python-app
+  AKS_CLUSTER: myaks
+  AKS_RESOURCE_GROUP: myResourceGroup
+
+stages:
+- stage: Build
+  displayName: 'Build and push to acr'
+  jobs:
+  - job:
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: checkout@1
+      displayname: 'checkou the source code'
+    - task: Docker@2
+      displayName: 'Build and push to acr 
+      inputs:
+        conatinerRegistry: 'my-acr-service-connection'
+        repository: $(IMAGE_NAME)
+        command: buildAndPush
+        Dockerfile: '**?Dockerfile'
+        tags: | 
+          $(Build.BuildID)
+
+- stage: Deploy 
+  displayName: 'Deploy to AKS'
+  jobs:
+  - job:
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: AzureCLI@2
+      displayName: 'Deploy to AKS'
+      inputs:
+        azureSubscripton: 'my-azure-service-connection'
+        scripttype: bash 
+        scriptLocation: inlineScript
+        inlineScript:
+          az aks get-credentials --resource-group $(AKS_RESORECE_GROUP) --name $(AKS_CLUSTER) 
+          kubectl set image deployment/python-app python-app=$(ACR_NAME).azureacr.io/$(IMAGE_NAME):$(Build.BuildID) --record || \
+          kubectl apply -f deployment.yaml
+          kubectl get svc python-service
+      

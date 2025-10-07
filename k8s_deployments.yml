@@ -1,0 +1,33 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: pythonloginapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pythonloginapp
+  template:
+    metadata: 
+      labels:
+        app: pythonloginapp
+    spec:
+      conainers:
+      - name: pythonloginapp
+        image: pythonapp/pythonappimage:v1
+        ports:
+        - conatinerPort: 5000
+
+---
+apiVersion: v1
+kind: service
+metadata:
+  name: pythonloginapp-service
+spec:
+  selector:
+    app: pythonloginapp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  type: loadBalancer

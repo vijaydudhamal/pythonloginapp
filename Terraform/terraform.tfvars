@@ -1,0 +1,11 @@
+resource_group_name     ="pythonloginapprg"
+resource_group_location = "East US"
+storage_account         = "storageforbackendtf90"
+azure_key_vault         = "azkrekv1987"
+virtual_network_name    = "pythonloginappnet"
+subnet_name             = "pythonloginappsub"
+network_security_group  = "pythonloginappsg"
+public_ip_name          = "pyhonloginapppub"
+network_interface_name  = "pyhonloginappnic"
+aks_cluster_name        = "pythonloginappaks"
+
