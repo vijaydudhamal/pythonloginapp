@@ -14,7 +14,7 @@ spec:
     spec:
       conainers:
       - name: pythonloginapp
-        image: pythonapp/pythonappimage:v1
+        image: docker.io/yourdockerhubusername/python-app:latest
         ports:
         - conatinerPort: 5000
 

@@ -1,5 +1,5 @@
-resource_group_name     ="kml_rg_main-041bf948a9b44cb4"
-resource_group_location = "East US"
+resource_group_name     ="kml_rg_main-c41d078df6ac415a"
+resource_group_location = "West US"
 storage_account         = "storageforbackendtf90"
 azure_key_vault         = "azkrekv1987"
 virtual_network_name    = "pythonloginappnet"

@@ -3,7 +3,7 @@ trigger:
     includes:
       - main
 variables:
-  ACR_NAME: myacr
+  DOCKERHUB_USERNAME: yourdockerhubusername
   IMAGE_NAME: python-app
   AKS_CLUSTER: myaks
   AKS_RESOURCE_GROUP: myResourceGroup
@@ -21,12 +21,13 @@ stages:
     - task: Docker@2
       displayName: 'Build and push to acr 
       inputs:
-        conatinerRegistry: 'my-acr-service-connection'
-        repository: $(IMAGE_NAME)
+        conatinerRegistry: 'my-docker-service-connection'
+        repository: $(DOCKERHUB_USERNAME)/$(IMAGE_NAME)'
         command: buildAndPush
-        Dockerfile: '**?Dockerfile'
+        Dockerfile: '**/Dockerfile'
         tags: | 
           $(Build.BuildID)
+          latest
 
 - stage: Deploy 
   displayName: 'Deploy to AKS'
