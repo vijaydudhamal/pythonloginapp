@@ -1,4 +1,4 @@
-resource_group_name     ="pythonloginapprg"
+resource_group_name     ="kml_rg_main-041bf948a9b44cb4"
 resource_group_location = "East US"
 storage_account         = "storageforbackendtf90"
 azure_key_vault         = "azkrekv1987"

@@ -1,10 +1,5 @@
 # create new resource group
 
-resource "azurerm_resource_gorup" "rg" {
-    name       = var.resource_group_name
-    location   = var.resource_group_location
-}
-
 # create virtual network
 
 resource "azurerm_virtual_network" "vnet" {
