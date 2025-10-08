@@ -3,6 +3,6 @@ output "public_ip_id" {
 }
 
 output "aks_cluster_name" {
-    value = "azurerm_kubernetes_cluster.aks.name
+    value = azurerm_kubernetes_cluster.aks.name
 }
 

@@ -1,4 +1,4 @@
-resource_group_name     ="kml_rg_main-bfd4c4f26f0b42d7"
+resource_group_name     ="kml_rg_main-0a94322369a54d58"
 resource_group_location = "West US"
 storage_account         = "storageforbackendtf90"
 azure_key_vault         = "azkrekv1987"
