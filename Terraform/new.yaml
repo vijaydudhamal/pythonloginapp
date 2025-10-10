@@ -1,0 +1,62 @@
+trigger:
+- main
+
+stages:
+- stage: Build
+  displayName: "Terraform Build Stage"
+  jobs:
+  - job: Build
+    displayName: "Terraform Build Job"
+    pool:
+      name: 'agentpool'
+    steps:
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(Build.SourcesDirectory)/Terraform'
+        backendServiceArm: 'terraform-service-connection'
+        backendAzureRmResourceGroupName: 'kml_rg_main-5eb40459c15b4941'
+        backendAzureRmStorageAccountName: 'backendtffile123575'
+        backendAzureRmContainerName: 'prod-tfstate'
+        backendAzureRmKey: 'prod.terraform.tfstate'
+
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Validate'
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Format'
+      inputs:
+        provider: 'azurerm'
+        command: 'custom'
+        customCommand: 'fmt'
+        outputTo: 'console'
+        environmentServiceNameAzureRM: 'terraform-service-connection'
+
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Plan'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        commandOptions: '-out=$(Build.SourcesDirectory)/tfplanfile'
+        environmentServiceNameAzureRM: 'terraform-service-connection'
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive Terraform Files'
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/Terraform'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        replaceExistingArchive: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Terraform Build Artifacts'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: '$(Build.BuildId)-build'
+        publishLocation: 'Container'
